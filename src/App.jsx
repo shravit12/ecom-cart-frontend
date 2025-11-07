@@ -19,7 +19,17 @@ export default function App(){
     setCart(data);
   };
 
-  useEffect(()=> { loadProducts(); loadCart(); }, []);
+useEffect(() => {
+  // 🟢 Step 1: Warm-up Render backend (prevents 10s delay)
+  fetch("https://ecom-cart-backend-ne5v.onrender.com/api/products")
+    .then(() => console.log("🚀 Backend woken up!"))
+    .catch(() => console.log("⚠️ Wake-up request failed"));
+
+  // 🟣 Step 2: Load products and cart after warm-up trigger
+  loadProducts();
+  loadCart();
+}, []);
+
 
   const handleAdd = async (productId) => {
     await addToCart(productId, 1);
